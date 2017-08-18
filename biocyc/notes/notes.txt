@@ -1,0 +1,1 @@
+extensions Allow-Control-Allow-Origin

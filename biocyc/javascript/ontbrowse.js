@@ -9,15 +9,22 @@
  */
 var tree;
 
-function classBrowser (topClass) {
+
+
+function classBrowser(topClass) {
 
 var container= "ontologyDiv";
 var treeInitialized = false;
-
 var biocyc = "https://biocyc.org";
+var num = 0;
+//var samples = ["EREC", "ABAU1221271"];
+var samples = [ "ABAU1221271"];
+var org; 
+
+
 
 function orgID() {
-  return "EREC";
+  return sample;
 }
 
 function buildTree() {
@@ -33,11 +40,12 @@ function buildTree() {
    var top = new YAHOO.widget.TextNode(topClass, root, false);
    top.href = biocyc + "/" + orgID() + "/new-image?object=" + topClass;
 
+   console.log(top.label);
    tree.draw();
    top.expand();
-   //treeInitialized = true;
-   treeInitialized = false;
+  // treeInitialized = true;
 }}
+
 
 function loadSubclasses(node, fnLoadComplete) {
   var nodeLabel = encodeURI(node.label);
@@ -61,13 +69,16 @@ function loadSubclasses(node, fnLoadComplete) {
                 if (nodeData.isClass) {
                   var tempNode = new YAHOO.widget.TextNode(nodeData, node, false);
                   tempNode.data = nodeData;
-		  tempNode.label = nodeData.label + " (" + nodeData.numInstances + " instances)";
-	            tempNode.href = biocyc + "/" + orgID() + "/new-image?object=" + encodeURIComponent(tempNode.data.id);
-		  tempNode.isLeaf = (nodeData.numInstances == 0);
+		          tempNode.label = nodeData.label + " (" + nodeData.numInstances + " instances)";
+	              tempNode.href = biocyc + "/" + orgID() + "/new-image?object=" + encodeURIComponent(tempNode.data.id);
+		          tempNode.isLeaf = (nodeData.numInstances == 0);
+                  console.log(i.toString() + " " +  num.toString() + " " + tempNode.label); 
+                  num++;
 		  // If there is only one child, don't make the user keep
  		  // clicking -- just keep expanding until we get to a choice
 		  // or a leaf.
-                  if (oResults.length == 1) tempNode.expand();
+                 // if (oResults.length == 1) 
+                  tempNode.expand();
                 }
                 else { 
                   var tempNode = new YAHOO.widget.TextNode(nodeData, node, false);
@@ -75,6 +86,8 @@ function loadSubclasses(node, fnLoadComplete) {
 	            tempNode.href = biocyc +  "/" + orgID() + "/new-image?object=" + encodeURIComponent(tempNode.data.id);
                   //tempNode.target = window.opener;
                   tempNode.isLeaf = true;
+                  console.log( i.toString() + "  " + num.toString() + " " + tempNode.label); 
+                  num++;
                 }
               }
             } else {
@@ -82,7 +95,10 @@ function loadSubclasses(node, fnLoadComplete) {
                 var tempNode = new YAHOO.widget.TextNode(oResults, node, false, false)
                 if (!tempNode.isClass) {
                   tempNode.isLeaf = true;
-                }              }
+                  console.log( i.toString() +  " " + num.toString() + " " + tempNode.label); 
+                  num++;
+                } 
+            }
          }
                                 
          //When we're done creating child nodes, we execute the node's
@@ -95,7 +111,7 @@ function loadSubclasses(node, fnLoadComplete) {
      //if our XHR call is not successful, we want to
      //fire the TreeView callback and let the Tree
      //proceed with its business.
-     failure: failLoadSubclasses,
+     failure:  failLoadSubclasses,
         
      //our handlers for the XHR response will need the same
      //argument information we got to loadNodeData, so
@@ -116,8 +132,20 @@ function loadSubclasses(node, fnLoadComplete) {
   YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 }
 
-//Add an onDOMReady handler to build the tree when the document is ready
-YAHOO.util.Event.onDOMReady(buildTree);
+for( i = 0; i < samples.length; i++ ) {
+    sample = samples[i];
+    console.log(orgID());
+    treeInitialized = false;
+    YAHOO.util.Event.onDOMReady(buildTree);
+
+    document.getElementById(container).innerHTML = "";
+
+    delete tree;
+
+}
+
+
+
 
 }
 
