@@ -13,34 +13,24 @@ var tree;
 
 function classBrowser(topClass) {
 
-var containers= [ "ontologyDiv0", "ontologyDiv1"];
+var container= "ontologyDiv";
 var treeInitialized = false;
 var biocyc = "https://biocyc.org";
 var num = 0;
-var samples = ["EREC", "ABAU1221271"];
-//var samples = [ "EREC"];
+//var samples = ["EREC", "ABAU1221271"];
+var samples = [ "EREC"];
 var org; 
 
-function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
-    }
-  }
-}
+
 
 function orgID() {
   return sample;
 }
 
-function buildTree(k) {
-
+function buildTree() {
  if (!treeInitialized) {
-   var k;
-   for(k =0; k < containers.length; k++) {
    //create a new tree:
-   tree = new YAHOO.widget.TreeView(containers[k]);
+   tree = new YAHOO.widget.TreeView(container);
    
    //turn dynamic loading on for entire tree:
    tree.setDynamicLoad(loadSubclasses, 1);
@@ -52,12 +42,9 @@ function buildTree(k) {
 
    console.log(top.label);
    tree.draw();
-   top.expand();
-   }
+   //top.expand();
   // treeInitialized = true;
-}
-
-}
+}}
 
 
 function loadSubclasses(node, fnLoadComplete) {
@@ -82,25 +69,23 @@ function loadSubclasses(node, fnLoadComplete) {
                 if (nodeData.isClass) {
                   var tempNode = new YAHOO.widget.TextNode(nodeData, node, false);
                   tempNode.data = nodeData;
-                  //tempNode.label = nodeData.label + " (" + nodeData.numInstances + " instances)";
-                  tempNode.label = nodeData.id + " (" + nodeData.numInstances + " instances)";
-                  tempNode.href = biocyc + "/" + orgID() + "/new-image?object=" + encodeURIComponent(tempNode.data.id);
-                  tempNode.isLeaf = (nodeData.numInstances == 0);
-                  console.log(i.toString() + " " +  num.toString() + " " + tempNode.id); 
+		          tempNode.label = nodeData.label + " (" + nodeData.numInstances + " instances)";
+	              tempNode.href = biocyc + "/" + orgID() + "/new-image?object=" + encodeURIComponent(tempNode.data.id);
+		          tempNode.isLeaf = (nodeData.numInstances == 0);
+                  console.log(i.toString() + " " +  num.toString() + " " + tempNode.label); 
                   num++;
- // If there is only one child, don't make the user keep
- // clicking -- just keep expanding until we get to a choice
- // or a leaf.
+		  // If there is only one child, don't make the user keep
+ 		  // clicking -- just keep expanding until we get to a choice
+		  // or a leaf.
                  // if (oResults.length == 1) 
-                  tempNode.expand();
+                //  tempNode.expand();
                 }
                 else { 
                   var tempNode = new YAHOO.widget.TextNode(nodeData, node, false);
                   tempNode.data = nodeData;
-                  tempNode.href = biocyc +  "/" + orgID() + "/new-image?object=" + encodeURIComponent(tempNode.data.id);
+	            tempNode.href = biocyc +  "/" + orgID() + "/new-image?object=" + encodeURIComponent(tempNode.data.id);
                   //tempNode.target = window.opener;
                   tempNode.isLeaf = true;
- //                 console.log( i.toString() + "  " + num.toString() + " " + tempNode.label); 
                   console.log( i.toString() + "  " + num.toString() + " " + tempNode.label); 
                   num++;
                 }
@@ -110,7 +95,7 @@ function loadSubclasses(node, fnLoadComplete) {
                 var tempNode = new YAHOO.widget.TextNode(oResults, node, false, false)
                 if (!tempNode.isClass) {
                   tempNode.isLeaf = true;
-    //              console.log( i.toString() +  " " + num.toString() + " " + tempNode.label); 
+                  console.log( i.toString() +  " " + num.toString() + " " + tempNode.label); 
                   num++;
                 } 
             }
@@ -147,12 +132,21 @@ function loadSubclasses(node, fnLoadComplete) {
   YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 }
 
- for( i = 0; i < samples.length; i++ ) {
+for( i = 0; i < samples.length; i++ ) {
     sample = samples[i];
     console.log(orgID());
     treeInitialized = false;
     YAHOO.util.Event.onDOMReady(buildTree);
- }
+
+    document.getElementById(container).innerHTML = "";
+
+    delete tree;
+
+}
+
+
+
+
 }
 
 function failLoadSubclasses (oResponse) {

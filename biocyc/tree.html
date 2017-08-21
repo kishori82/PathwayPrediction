@@ -44,18 +44,23 @@
 
 
 <script type="text/javascript" src="https://biocyc.org/yui/build/treeview/treeview-min.js"></script>
-<script src="javascript/ontbrowse.js"></script> 
+<script src="javascript/ontbrowse_3.js"></script> 
+<script src="javascript/samples.js"></script> 
 </HEAD>
 <BODY>
 
-<div id="ontologyDiv"> I am the div</div>
-<script> classBrowser('Pathways'); </script> 
+<div id="ontologyDiv0"> I am the div</div>
+<div id="ontologyDiv1"> I am the div</div>
+
+<form id="myform" action="localhost:8000" method="POST">
+  <input id="myfile" type="file" name="fileToUpload" value="a">
+  <input type="submit" name="upload" value="Upload">
+</form>
 
 <!--
 <form action="upload.php" method="post" enctype="multipart/form-data">
-    Select image to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload">
-    <input type="submit" value="Upload Image" name="submit">
+  <input type="file" name="my-file" size="50" maxlength="25"> <br> 
+  <input type="submit" name="upload" value="Upload">
 </form>
 -->
 
@@ -66,6 +71,11 @@ Last Name: <input type="text" name="last_name" />
 <input type="submit" value="Submit" />
 -->
 
+<!--
+<a href="" id="a"> Download File</a>
+<button onclick="download('myfilename.txt', 'text/plain')">Create file</button>
+<script> classBrowser('Pathways'); </script> 
+-->
 
 </form>
 </BODY>

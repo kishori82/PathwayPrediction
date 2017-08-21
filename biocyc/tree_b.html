@@ -44,11 +44,14 @@
 
 
 <script type="text/javascript" src="https://biocyc.org/yui/build/treeview/treeview-min.js"></script>
-<script src="javascript/ontbrowse.js"></script> 
+<script src="javascript/ontbrowse_3.js"></script> 
+<script src="javascript/samples_b.js"></script> 
 </HEAD>
 <BODY>
 
-<div id="ontologyDiv"> I am the div</div>
+<div id="ontologyDiv0"> I am the div</div>
+<div id="ontologyDiv1"> I am the div</div>
+
 <script> classBrowser('Pathways'); </script> 
 
 <!--
@@ -59,12 +62,15 @@
 </form>
 -->
 
-<form action="hello_get.py" method="post">
+<!--
+<form action="cgi-bin/hello_get.py" method="post">
 First Name: <input type="text" name="first_name"><br />
 Last Name: <input type="text" name="last_name" />
 <input type="submit" value="Submit" />
+-->
 
-
+<a href="" id="a"> Download File</a>
+<button onclick="download('myfilename.txt', 'text/plain')">Create file</button>
 
 </form>
 </BODY>

@@ -1,1 +1,4 @@
 extensions Allow-Control-Allow-Origin
+php -S localhost:8000 -t .
+
+python -m CGIHTTPServer 8000
