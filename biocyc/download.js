@@ -3,9 +3,9 @@ var output=" hello ";
 
 
 
-
 function download() {
   var i;
+/*
   for(i=0; i < 2;  i++) {
     var href="http://bioinformatics.ai.sri.com/ecocyc/dist/flatfiles-52983746/" + samples[i]
     var createA = document.createElement('a');
@@ -18,11 +18,83 @@ function download() {
   for(i=0; i < 2;  i++) {
      document.getElementById(samples[i]).click() ;
   }
+*/
+
+  var filesForDownload = [];
 
 
+  for(i=0; i < 2;  i++) {
+     var href="http://bioinformatics.ai.sri.com/ecocyc/dist/flatfiles-52983746/" + samples[i];
+     filesForDownload.push({ path: href, name: samples[i] });
+  }
+
+  $jq('input.downloadAll').click( function( e )
+   {
+    e.preventDefault();
+    var temporaryDownloadLink = document.createElement("a");
+    temporaryDownloadLink.style.display = 'none';
+    document.body.appendChild( temporaryDownloadLink );
+    for( var n = 0; n < filesForDownload.length; n++ )
+    {
+        var download = filesForDownload[n];
+        temporaryDownloadLink.setAttribute( 'href', download.path );
+        temporaryDownloadLink.setAttribute( 'download', download.name );
+
+        temporaryDownloadLink.click();
+    }
+
+    document.body.removeChild( temporaryDownloadLink );
+   }   );
 
 //document.body.appendChild(btn);                    // Append <button> to <body>
 
+}
+
+function downloadAll() {
+  var link = document.createElement('a');
+
+  var  urls=[];
+  for(i=0; i < 10;  i++) {
+     var href="http://bioinformatics.ai.sri.com/ecocyc/dist/flatfiles-52983746/" + samples[i];
+     urls.push(href);
+  }
+
+  link.setAttribute('download', null);
+  link.style.display = 'none';
+
+  document.body.appendChild(link);
+
+  for (var i = 0; i < urls.length; i++) {
+    link.setAttribute('href', urls[i]);
+     console.log(urls[i]);
+    link.click();
+  }
+
+  document.body.removeChild(link);
+}
+
+function getFiles() {
+    $('#download').click(function() {
+       download("asp310037.tar.gz", "acel509191.tar.gz");
+     });
+
+     var download = function() {
+       for(var i=0; i<arguments.length; i++) {
+         console.log(arguments[i]);
+         var iframe = $('<iframe style="visibility: collapse;"></iframe>');
+         $('body').append(iframe);
+         var content = iframe[0].contentDocument;
+         var href="http://bioinformatics.ai.sri.com/ecocyc/dist/flatfiles-52983746/" + arguments[i]
+         var form = '<form action="' + href + '" method="GET"></form>';
+         content.write(form);
+         $('form', content).submit();
+         setTimeout((function(iframe) {
+           return function() { 
+             iframe.remove(); 
+           }
+         })(iframe), 10000);
+       }
+     }      
 }
 
 
