@@ -1,0 +1,36 @@
+These are a few things we can discuss on the paper.
+
+1. What is a metabolic pathway?
+Answer: Well accepted definition describes a metabolic pathway as a series of enzyme-catalysed chemical reactions occuring within organism, in which a principal chemical is modified.
+
+2. What is the site containing metabolic information?
+Answer: Metacyc
+
+3. Who are the curators of metacyc database?
+
+4. what is a pathway based framework?
+
+5. How metacyc is used as template for pathway prediction software?
+
+6. How much quantity and variety of sequenced genome available in biocyc.org ?
+
+7. What are the utilities of pathways to users of metacyc and what are the utilities of the pathways to pathway prediction software?
+
+8. How do we classify pathways within a broader pathway ontology and what is meant by "broader pathway ontology"? What are the challenges to classify pathways?
+
+9. What are the rules that have been developed by metacyc curators as they make decisions regarding the representation and classification of metabolic pathway information in metacyc?
+
+10. What are the consequences of these decisions in regard to pathway prediction in new species?
+
+11. What are metabolic enzymes and how it relates to pathways in a living organism?
+
+12. what are sequenced and annotated genomes?
+
+13. What are being described in this review paper about some of the challenges that we face while curating and categorising metabolic pathways in the metacyc database and challenges while predicting the presence of these pathways in the various organisms that make up the biocyc collection of pathway/genome database.
+
+14. what are the guidelines and solutions they have developed to deal with these challenges?
+
+15. what are some well definded key pathways of central metabolism, such as glycolysis and citric acid cycle?
+
+16. What is meant by "...reveals that uniformity in pathway description is limited becasuse the metabolic network inside a living cell is very complex." ?
+
