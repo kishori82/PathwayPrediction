@@ -1,7 +1,0 @@
-extensions Allow-Control-Allow-Origin
-php -S localhost:8000 -t .
-
-python -m CGIHTTPServer 8000
-Databases:      http://bioinformatics.ai.sri.com/ecocyc/dist/flatfiles-52983746/
-Username: biocyc-flatfiles
-Password: data-20541
