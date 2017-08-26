@@ -79,7 +79,7 @@ def main(argv, errorlogger = None, runstatslogger = None):
        total += 1
        if prok in ncbi_orgs: 
          hits += 1
-         print prok, prokaryotes[prok]
+         #print prok, prokaryotes[prok]
 
     print "#total ", total, "#hits", hits
           
