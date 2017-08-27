@@ -10,7 +10,7 @@ __maintainer__ = "Kishori M Konwar"
 __status__ = "Release"
 
 try:
-     import os, re, glob, operator, sys
+     import os, re, glob, operator, sys, gzip
      from NCBITREE import NCBITREE
      from os import makedirs, sys, remove, rename
      from sys import path
@@ -42,6 +42,9 @@ def createParser():
     parser.add_option("-n", "--ncbi_file", dest="ncbi_file",
                       help='the ncbi file [REQUIRED]')
 
+    parser.add_option("-p", "--org_pathways", dest="org_pathways",
+                      help='the org pathways  file [REQUIRED]')
+
     parser.add_option("-o", "--output_file", dest="output_file",
                       help='the output file [REQUIRED]')
 
@@ -55,8 +58,14 @@ def main(argv, errorlogger = None, runstatslogger = None):
 
     ncbitree = NCBITREE(opts.ncbi_file)
 
+    with gzip.open(opts.org_pathways, 'r' ) as fin:
+      for line in fin:
+        fields = [ x.strip() for x in line.strip().split('\t') ]
+        ncbitree.add_org_pathways(fields[0], fields[1:])
 
-    
+    print ncbitree.get_root()
+    ncbitree.print_tree('1', depth=0, limit=4)
+
 
 # the main function of metapaths
 if __name__ == "__main__":

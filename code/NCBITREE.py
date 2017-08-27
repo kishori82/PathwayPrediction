@@ -21,10 +21,6 @@ class NCBITREE:
 
     results_dictionary = None
 
-    megan_map = {} # hash between NCBI ID and taxonomic name name
-    
-    accession_to_taxon_map = {} # hash between gi and taxon name
-
     idno=0
 
     # initialize with the ncbi tree file 
@@ -41,8 +37,77 @@ class NCBITREE:
         self.loadtreefile(filename)
         print filename,  len(self.taxid_to_ptaxid.keys())
 
+        self.org_pathways={}
 
-    def get_preferred_taxonomy(self, ncbi_id):
+    def loadtreefile(self, filename):
+        with gzip.open(filename, 'r') as fin:
+          lines = fin.readlines()
+
+        #this simply creates the tree
+        for line in lines:
+              if self.begin_pattern.search(line):
+                  continue
+              fields =  [ x.strip()  for x in line.rstrip().split('\t')]
+              if len(fields) !=3:
+                  continue
+              if str(fields[0]) not in self.id_to_name:
+                  self.name_to_id[str(fields[0]).lower()] = str(fields[1])
+  
+              self.id_to_name[str(fields[1])] = str(fields[0])
+  
+              # the taxid to ptax map has for each taxid a corresponding 3-tuple   [ x, y , z ]
+              # x : pid,  parent id
+              # y : a flag
+              # z : a counter
+              # u : {id1, id2,...idn} set of children as a dictionary the values are flag
+  
+              self.taxid_to_ptaxid[str(fields[1])] = [ str(fields[2]), 0, 0, {}]
+         
+        #this is a code where each children introuduces itself in the parent's hash 
+        for line in lines:
+              if self.begin_pattern.search(line):
+                  continue
+              fields =  [ x.strip()  for x in line.rstrip().split('\t')]
+              if len(fields) !=3:
+                  continue
+
+              sid = str(fields[1])
+
+              while sid!='1':
+                 pid = self.taxid_to_ptaxid[sid][0]
+                 if sid in self.taxid_to_ptaxid[pid][3]:
+                    break
+
+                 self.taxid_to_ptaxid[pid][3][sid] = 0
+                 sid = pid
+                 
+
+    def get_root(self):
+         sid = None
+         for tid, pid in  self.taxid_to_ptaxid.iteritems():
+            sid = tid
+
+         while sid!='1':
+             pid = self.taxid_to_ptaxid[sid][0]
+             sid = pid
+
+         return sid
+
+
+    def print_tree(self, rid, depth=0, limit=1000000):
+        print '\t'*depth, self.id_to_name[rid]
+        cids = self.taxid_to_ptaxid[rid][3].keys()
+        ctr = 0
+        for cid in cids:
+          self.print_tree(cid, depth=depth+1, limit = limit)
+          ctr += 1
+          if ctr > limit:
+             break
+
+
+
+    # return the taxonomy linears from and id, e.g., 56 would return Bacteria;ProteoBacteria;Gammaproteobacteria;Some Species name
+    def get_full_taxonomy(self, ncbi_id):
         ncbi_id = str(ncbi_id)
 
         if ncbi_id in self.megan_map:
@@ -52,53 +117,24 @@ class NCBITREE:
             for lid in exp_lin:
                 if lid in self.id_to_name:
                    name += self.id_to_name[lid]+ ';';
-
-            # decommison old format
-            #return self.megan_map[ncbi_id] + " (" + str(ncbi_id) + ")"
-
             return name + " (" + str(ncbi_id) + ")"
         # think about this
         return None
 
-
-
-    def loadtreefile(self, filename):
-        taxonomy_file = gzip.open(filename, 'r')
-        lines = taxonomy_file.readlines()
-        taxonomy_file.close()
-
-
-        for line in lines:
-            if self.begin_pattern.search(line):
-                continue
-            fields =  [ x.strip()  for x in line.rstrip().split('\t')]
-            if len(fields) !=3:
-                continue
-            if str(fields[0]) not in self.id_to_name:
-                self.name_to_id[str(fields[0])] = str(fields[1])
-            self.id_to_name[str(fields[1])] = str(fields[0])
-            # the taxid to ptax map has for each taxid a corresponding 3-tuple
-            # the first location is the pid, the second is used as a counter for
-            # lca while a search is traversed up the tree and the third is used for
-            # the min support
-            self.taxid_to_ptaxid[str(fields[1])] = [ str(fields[2]), 0, 0]
-
-    def setParameters(self, min_score, top_percent, min_support):
-        self.lca_min_score = min_score
-        self.lca_top_percent =top_percent
-        self.lca_min_support = min_support
-         
-    def sizeTaxnames(self ):
+    # get the number of taxon ids
+    def numTaxnames(self ):
          return len(self.name_to_id)
 
 
-    def sizeTaxids(self):
+    # get the number of unique taxon ids
+    def numTaxids(self):
          return len(self.taxid_to_ptaxid)
 
-    def get_a_Valid_ID(self, name):
+    # given a tax name tet the id
+    def get_ID(self, name):
         if name in self.name_to_id:
            return  self.name_to_id[name]
-        return -1
+        return None
 
     # given a taxon name it returns the correcponding unique ncbi tax id
     def translateNameToID(self, name):
@@ -128,8 +164,8 @@ class NCBITREE:
         return self.taxid_to_ptaxid[ID][0]
 
 
-    # need to call this to clear the counts of reads at every node      
-    def clear_cells(self, IDs):
+    # internal function need to call this to clear the counts of reads at every node      
+    def _clear_cells(self, IDs):
         limit = len(IDs)
         for id in IDs:
             tid = id
@@ -139,10 +175,6 @@ class NCBITREE:
                 self.taxid_to_ptaxid[tid][1]=0
                 tid = self.taxid_to_ptaxid[tid][0]
 
-
-    # used for optimization
-    def set_results_dictionary(self, results_dictionary):
-        self.results_dictionary= results_dictionary
 
     # monotonicly decreasing function of depth of divergence d
     def step_cost(self, d):
@@ -157,12 +189,17 @@ class NCBITREE:
             lineage.append(self.taxid_to_ptaxid[tid][0])
             tid = self.taxid_to_ptaxid[tid][0]
         return lineage
+ 
+    def add_org_pathways(self, name, pathways):
+       name = name.lower()
+       if name in self.name_to_id:
+          id = self.name_to_id[name]
+          self.org_pathways[name] = pathways
+
 
 def fprintf(file, fmt, *args):
    file.write(fmt % args)
    
-   
-
 def printf(fmt, *args):
    sys.stdout.write(fmt % args)
    sys.stdout.flush()
