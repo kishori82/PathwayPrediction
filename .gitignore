@@ -1,2 +1,3 @@
 biocyc_pgdbs
+corepathways/*
 *.pyc
