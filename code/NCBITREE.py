@@ -37,7 +37,8 @@ class NCBITREE:
         self.loadtreefile(filename)
         print filename,  len(self.taxid_to_ptaxid.keys())
 
-        self.org_pathways={}
+        self.name_pathways={}
+        self.id_pathways={}
 
     def loadtreefile(self, filename):
         with gzip.open(filename, 'r') as fin:
@@ -103,8 +104,6 @@ class NCBITREE:
           ctr += 1
           if ctr > limit:
              break
-
-
 
     # return the taxonomy linears from and id, e.g., 56 would return Bacteria;ProteoBacteria;Gammaproteobacteria;Some Species name
     def get_full_taxonomy(self, ncbi_id):
@@ -193,8 +192,64 @@ class NCBITREE:
     def add_org_pathways(self, name, pathways):
        name = name.lower()
        if name in self.name_to_id:
-          id = self.name_to_id[name]
-          self.org_pathways[name] = pathways
+          tid = self.name_to_id[name]
+          self.name_pathways[name] = pathways
+          self.id_pathways[tid] = pathways
+          self.taxid_to_ptaxid[tid][2] = 1
+
+
+    def get_siblings(self, asids = True):
+       sibling_groups = []
+       for tid in self.taxid_to_ptaxid:
+          if self.taxid_to_ptaxid[tid][3] and self.taxid_to_ptaxid[tid][1]==0:
+             _sibling_ids =  self.taxid_to_ptaxid[self.taxid_to_ptaxid[tid][0]][3].keys()
+
+             sibling_ids = []
+             for sibling_id in _sibling_ids:
+                if self.taxid_to_ptaxid[sibling_id][2]==1:
+                  sibling_ids.append(sibling_id)
+
+             for sibling_id in sibling_ids:
+               self.taxid_to_ptaxid[tid][1] = 1
+             sibling_names = []
+
+             for sibling_id in sibling_ids:
+                if asids:
+                  sibling_names.append( sibling_id )
+                else:
+                  sibling_names.append( self.id_to_name[sibling_id] )
+
+             if len(sibling_ids) > 1:
+                sibling_groups.append( sibling_names )
+
+       return sibling_groups
+        
+    def get_common_pathways(self, sibling_ids):
+        pathways={}
+        for sibling_id in sibling_ids:
+           for pwy in self.id_pathways[sibling_id]:
+             if not pwy in pathways:
+                pathways[pwy] = 0
+             pathways[pwy] += 1
+
+        avg = 0 
+        for pwy in pathways:
+           avg += pathways[pwy]
+
+
+        vals = pathways.values()
+        vals.sort(reverse=True)
+        median = vals[int(0.25*len(vals))]
+
+        try:
+          avg = avg/(len(sibling_ids)*len(pathways))
+        except:
+          print sibling_ids
+          print len(pathways)
+          sys.exit(0)
+
+        return avg, median,  len(pathways)
+       
 
 
 def fprintf(file, fmt, *args):

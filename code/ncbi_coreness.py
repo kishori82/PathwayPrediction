@@ -10,7 +10,7 @@ __maintainer__ = "Kishori M Konwar"
 __status__ = "Release"
 
 try:
-     import os, re, glob, operator, sys, gzip
+     import os, re, glob, operator, sys, gzip, random
      from NCBITREE import NCBITREE
      from os import makedirs, sys, remove, rename
      from sys import path
@@ -61,10 +61,32 @@ def main(argv, errorlogger = None, runstatslogger = None):
     with gzip.open(opts.org_pathways, 'r' ) as fin:
       for line in fin:
         fields = [ x.strip() for x in line.strip().split('\t') ]
-        ncbitree.add_org_pathways(fields[0], fields[1:])
+        if len(fields[1:]):
+            ncbitree.add_org_pathways(fields[0], fields[1:])
+        else:
+            print "Empty list : ", fields[0]
+
 
     print ncbitree.get_root()
-    ncbitree.print_tree('1', depth=0, limit=4)
+    #ncbitree.print_tree('1', depth=0, limit=4)
+    sibling_groups =  ncbitree.get_siblings()
+
+    sibling_all  =[]
+    for sibling_group in sibling_groups: 
+         sibling_all += sibling_group
+
+    print len(sibling_all), len(sibling_groups)
+
+    N =  len(sibling_all)
+    for sibling_group in sibling_groups: 
+         avg, nmedian, npathways = ncbitree.get_common_pathways(sibling_group)
+
+         random_group =[]
+         for i in range(0, len(sibling_group)):
+             random_group.append( sibling_all[random.randint(0, N-1)] )
+         ravg, rnmedian, nrpathways = ncbitree.get_common_pathways(random_group)
+
+         print "%s %.2f %d %d %.2f %d %d " %( len(sibling_group), avg,  nmedian, npathways,  ravg, rnmedian, nrpathways)
 
 
 # the main function of metapaths
