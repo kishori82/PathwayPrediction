@@ -67,26 +67,27 @@ def main(argv, errorlogger = None, runstatslogger = None):
             print "Empty list : ", fields[0]
 
 
-    print ncbitree.get_root()
     #ncbitree.print_tree('1', depth=0, limit=4)
     sibling_groups =  ncbitree.get_siblings()
 
     sibling_all  =[]
     for sibling_group in sibling_groups: 
          sibling_all += sibling_group
+         print sibling_group
+
 
     print len(sibling_all), len(sibling_groups)
-
     N =  len(sibling_all)
+
     for sibling_group in sibling_groups: 
-         avg, nmedian, npathways = ncbitree.get_common_pathways(sibling_group)
+         avg, npathways = ncbitree.get_common_pathways(sibling_group)
 
          random_group =[]
          for i in range(0, len(sibling_group)):
              random_group.append( sibling_all[random.randint(0, N-1)] )
-         ravg, rnmedian, nrpathways = ncbitree.get_common_pathways(random_group)
+         ravg, nrpathways = ncbitree.get_common_pathways(random_group)
 
-         print "%s %.2f %d %d %.2f %d %d " %( len(sibling_group), avg,  nmedian, npathways,  ravg, rnmedian, nrpathways)
+#         print "%5d %5d %5d\t\t%5d %5d\t\t%10s" %( len(sibling_group), avg,  npathways,  ravg, nrpathways, (avg < ravg))
 
 
 # the main function of metapaths

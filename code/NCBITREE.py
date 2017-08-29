@@ -226,29 +226,20 @@ class NCBITREE:
         
     def get_common_pathways(self, sibling_ids):
         pathways={}
+
         for sibling_id in sibling_ids:
            for pwy in self.id_pathways[sibling_id]:
              if not pwy in pathways:
                 pathways[pwy] = 0
+
              pathways[pwy] += 1
 
         avg = 0 
         for pwy in pathways:
-           avg += pathways[pwy]
+           if pathways[pwy]==len(sibling_ids):
+             avg += 1
 
-
-        vals = pathways.values()
-        vals.sort(reverse=True)
-        median = vals[int(0.25*len(vals))]
-
-        try:
-          avg = avg/(len(sibling_ids)*len(pathways))
-        except:
-          print sibling_ids
-          print len(pathways)
-          sys.exit(0)
-
-        return avg, median,  len(pathways)
+        return avg, len(pathways)
        
 
 
