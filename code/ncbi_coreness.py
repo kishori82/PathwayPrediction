@@ -73,12 +73,12 @@ def main(argv, errorlogger = None, runstatslogger = None):
     sibling_all  =[]
     for sibling_group in sibling_groups: 
          sibling_all += sibling_group
-         print sibling_group
-
 
     print len(sibling_all), len(sibling_groups)
     N =  len(sibling_all)
 
+    c = 1
+    j = 0
     for sibling_group in sibling_groups: 
          avg, npathways = ncbitree.get_common_pathways(sibling_group)
 
@@ -87,8 +87,11 @@ def main(argv, errorlogger = None, runstatslogger = None):
              random_group.append( sibling_all[random.randint(0, N-1)] )
          ravg, nrpathways = ncbitree.get_common_pathways(random_group)
 
-#         print "%5d %5d %5d\t\t%5d %5d\t\t%10s" %( len(sibling_group), avg,  npathways,  ravg, nrpathways, (avg < ravg))
+         print "%5d %5d %5d %5d\t\t%5d %5d\t\t%10s" %( c, len(sibling_group), avg,  npathways,  ravg, nrpathways, (avg < ravg))
+         c += 1
+         j += len(sibling_group)
 
+    print 'total', j, len(ncbitree.id_pathways)
 
 # the main function of metapaths
 if __name__ == "__main__":

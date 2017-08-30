@@ -201,18 +201,17 @@ class NCBITREE:
     def get_siblings(self, asids = True):
        sibling_groups = []
        for tid in self.taxid_to_ptaxid:
-          if self.taxid_to_ptaxid[tid][3] and self.taxid_to_ptaxid[tid][1]==0:
+          #if len(self.taxid_to_ptaxid[tid][3])==0 and self.taxid_to_ptaxid[tid][1]==0:
+          if self.taxid_to_ptaxid[tid][1]==0:
              _sibling_ids =  self.taxid_to_ptaxid[self.taxid_to_ptaxid[tid][0]][3].keys()
 
              sibling_ids = []
              for sibling_id in _sibling_ids:
                 if self.taxid_to_ptaxid[sibling_id][2]==1:
                   sibling_ids.append(sibling_id)
+                self.taxid_to_ptaxid[sibling_id][1] = 1
 
-             for sibling_id in sibling_ids:
-               self.taxid_to_ptaxid[tid][1] = 1
              sibling_names = []
-
              for sibling_id in sibling_ids:
                 if asids:
                   sibling_names.append( sibling_id )
@@ -239,7 +238,10 @@ class NCBITREE:
            if pathways[pwy]==len(sibling_ids):
              avg += 1
 
-        return avg, len(pathways)
+        vals = pathways.values()
+        vals.sort(reverse=True)
+
+        return vals[ int(len(vals)*0.4)], len(pathways)
        
 
 
