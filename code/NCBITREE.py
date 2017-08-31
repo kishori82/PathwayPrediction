@@ -241,7 +241,7 @@ class NCBITREE:
         vals = pathways.values()
         vals.sort(reverse=True)
 
-        return vals[ int(len(vals)*0.4)], len(pathways)
+        return vals[ int(len(vals)*0.2)], len(pathways)
        
 
 
