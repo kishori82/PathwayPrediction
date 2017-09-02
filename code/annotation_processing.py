@@ -73,6 +73,7 @@ def main(argv, errorlogger = None, runstatslogger = None):
     c = 1
     with open(opts.annot_file, 'r' ) as fin:
       for line in fin:
+         #line = line.lower()
          annot=None
          res = common_name.search(line) 
          if res:
@@ -87,7 +88,7 @@ def main(argv, errorlogger = None, runstatslogger = None):
          if annot:
              annotid = "ANOT-" + str(c)
              c += 1
-             annotations[annotid] = annot
+             annotations[annotid] = annot.lower()
 
     indexes ={}
     for annotid in annotations:
@@ -98,9 +99,27 @@ def main(argv, errorlogger = None, runstatslogger = None):
          indexes[field].append(annotid)
 
     
-    with open(opts.sample_file, 'r' ) as fin:
+    with gzip.open(opts.sample_file, 'r' ) as fin:
       for line in fin:
-        fields = [ x.strip() for x in line.split(' ') ]
+        annot_matches={}
+        line = line.lower()
+        fields = [ x.strip() for x in line.split('\t') ]
+        print "=====>", line
+        if len(fields) ==2 and fields[1]: 
+           words = [ x.strip() for x in fields[1].split(' ') ]
+           for word in words:  
+             if word in indexes:
+                for annotid in indexes[word]:
+                  if not annotid in annot_matches:
+                     annot_matches[annotid] = 0
+                  annot_matches[annotid] += 1
+
+             for annotid in annot_matches:
+                if annot_matches[annotid] >= 2:
+                   print '\t\t',annotations[annotid]
+                   break
+           
+        
           
 
          
