@@ -1,0 +1,341 @@
+# Copyright SRI International 1999-2017, Marine Biological Laboratory 1998-2001, DoubleTwist Inc 1998-1999.  All Rights Reserved.
+#
+# Authors:
+#    Ron Caspi
+#    Carol A Fulcher
+#    Anamika Kothari
+#    Markus Krummenacker
+#    Mario Latendresse
+#    Suzanne Paley
+#    Pallavi Subhraveti
+#    Peifen Zhang
+#    Sue Rhee
+#    Hartmut Foerster
+#    Lukas Mueller
+#    Peter D Karp
+#
+# Please see the license agreement regarding the use of and distribution of this file.
+# The format of this file is defined at http://bioinformatics.ai.sri.com/ptools/flatfile-format.html .
+#
+# Species: MetaCyc
+# Database: MetaCyc
+# Version: 21.1
+# File Name: rnas.dat
+# Date and time generated: August 9, 2017, 11:42:39
+#
+# Attributes:
+#    UNIQUE-ID
+#    TYPES
+#    COMMON-NAME
+#    ABBREV-NAME
+#    ANTICODON
+#    AROMATIC-RINGS
+#    ATOM-CHARGES
+#    ATOM-ISOTOPES
+#    CHEMICAL-FORMULA
+#    CITATIONS
+#    CODONS
+#    COFACTORS-OF
+#    COMMENT
+#    COMPONENT-OF
+#    CREDITS
+#    DATA-SOURCE
+#    DBLINKS
+#    DOCUMENTATION
+#    FAST-EQUILIBRATING-INSTANCES?
+#    GENE
+#    GO-TERMS
+#    HAS-NO-STRUCTURE?
+#    HIDE-SLOT?
+#    IN-MIXTURE
+#    INCHI
+#    INCHI-KEY
+#    INSTANCE-NAME-TEMPLATE
+#    INTERNALS-OF-GROUP
+#    LOCATIONS
+#    MEMBER-SORT-FN
+#    MODIFIED-FORM
+#    MOLECULAR-WEIGHT
+#    MONOISOTOPIC-MW
+#    N+1-NAME
+#    N-1-NAME
+#    N-NAME
+#    NON-STANDARD-INCHI
+#    PATHOLOGIC-NAME-MATCHER-EVIDENCE
+#    PATHOLOGIC-PWY-EVIDENCE
+#    PKA1
+#    PKA2
+#    PKA3
+#    RADICAL-ATOMS
+#    REGULATED-BY
+#    REGULATES
+#    SMILES
+#    SPECIES
+#    SPLICE-FORM-INTRONS
+#    STRUCTURE-BONDS
+#    SUPERATOMS
+#    SYNONYMS
+#    SYSTEMATIC-NAME
+#    TAUTOMERS
+#    UNMODIFIED-FORM
+#
+UNIQUE-ID - TRNA
+TYPES - tRNAs
+COMMON-NAME - tRNA
+CREDITS - SRI
+CREDITS - paley
+NON-STANDARD-INCHI - InChI=1S/C15H29O19P3/c16-7-1-27-10(13(7)19)4-31-36(23,24)34-15-9(18)3-29-12(15)6-32-37(25,26)33-14-8(17)2-28-11(14)5-30-35(20,21)22/h7-19H,1-6H2,(H,23,24)(H,25,26)(H2,20,21,22)/p-3/t7-,8-,9-,10+,11+,12+,13-,14-,15-/m0/s1
+REGULATES - REG0-6834
+//
+UNIQUE-ID - RRFA-RRNA
+TYPES - 5S-rRNAs
+COMMON-NAME - 5S ribosomal RNA (rrfA)
+CITATIONS - 6181508
+COMMENT - The 5S and 23S rRNAs are the RNA components of the large subunit (50S subunit) of the <i>E. coli</i> ribosome. 
+/
+/There are seven ribosomal RNA (rRNA) operons, called rrnA, rrnB, rrnC, rrnD, rrnE, rrnG, and rrnH.  Each operon
+/contains a 16S rRNA gene, a 23S rRNA gene, and a 5S rRNA gene (except the rrnD operon, which contains two 5S
+/rRNA genes) interspersed with various tRNA genes.  Regarding nomenclature, "rrs" genes encode 16S rRNAs, "rrl"
+/genes encode 23S rRNAs, and "rrf" genes encode 5S rRNAs |CITS: [COLISALII]|. 
+/
+/The sequence and structure of the 5S rRNA has been described, and the relationship of the 5S rRNA to ribosome
+/assembly, structure, and function has been characterized.  Interactions between the 5S rRNA and 23S rRNA as well
+/as ribosomal proteins have been described.  Mutations in 5S rRNA have been analyzed, and the post-transcriptional
+/processing of the 5S rRNA has been characterized.
+/
+/Reviews describing these results are available.
+/
+/Regulation has been described in detail; for a review see |CITS: [12732305]|.
+/
+/Reviews: |CITS: [152015][94160][3913708][3071658][3071660][3071690][3071691][1764510][8603119][9572078]|
+/
+COMPONENT-OF - CPLX0-3962
+DBLINKS - (ECOLIWIKI "b3855" NIL |kr| 3409616149 NIL NIL)
+GENE - EG30070
+NON-STANDARD-INCHI - InChI=1S/C15H29O19P3/c16-7-1-27-10(13(7)19)4-31-36(23,24)34-15-9(18)3-29-12(15)6-32-37(25,26)33-14-8(17)2-28-11(14)5-30-35(20,21)22/h7-19H,1-6H2,(H,23,24)(H,25,26)(H2,20,21,22)/p-3/t7-,8-,9-,10+,11+,12+,13-,14-,15-/m0/s1
+SPECIES - TAX-511145
+SYNONYMS - rrfA
+//
+UNIQUE-ID - RRLA-RRNA
+TYPES - 23S-rRNAs
+COMMON-NAME - 23S ribosomal RNA (rrlA)
+COMMENT - The 23S and 5S rRNAs are the RNA components of the large subunit (50S subunit) of the <i>E. coli</i> ribosome. 
+/
+/There are seven ribosomal RNA (rRNA) operons, called rrnA, rrnB, rrnC, rrnD, rrnE, rrnG, and rrnH.  Each operon
+/contains a 16S rRNA gene, a 23S rRNA gene, and a 5S rRNA gene (except the rrnD operon, which contains two 5S
+/rRNA genes) interspersed with various tRNA genes.  Regarding nomenclature, "rrs" genes encode 16S rRNAs, "rrl"
+/genes encode 23S rRNAs, and "rrf" genes encode 5S rRNAs |CITS: [COLISALII]|.
+/
+/The sequence and structure of the 23S rRNA has been described, and the relationship of the 23S rRNA to ribosome
+/assembly, structure, and function has been characterized.  Interactions between the 23S rRNA and ribosomal
+/proteins have been described.  
+/
+/The relationship of the 23S rRNA to sensitivity to multiple antibiotics is discussed.  23S rRNA also encodes a short
+/peptide that plays a role in erythromycin resistance.
+/
+/Analysis of mutations in 23S rRNA has been conducted.
+/
+/The 23S rRNA is subject to pseudouridylation, dihydrouridylation, and methylation.  Processing and modification of the
+/23S rRNA has been characterized.  Possible roles for the modified nucleotides have been proposed
+/|CITS: [17389639]|; their location has been visualized in a cryo-EM structure of the ribosome |CITS: [25707802]|.
+/
+/Reviews describing these results are available.
+/
+/Regulation has been described in detail; for a review see |CITS: [12732305]|.
+/
+/Reviews: |CITS: [3326871][3053566][2655923][1764510][1720671][1379076][1587345][8721993][8722019][8722022][8722031][8722035][8594571][9016533][9399853][10494619][10902565][11810493][12370013][12762014]|.
+/
+COMPONENT-OF - CPLX0-3962
+DBLINKS - (ECOLIWIKI "b3854" NIL |kr| 3409616149 NIL NIL)
+GENE - EG30077
+NON-STANDARD-INCHI - InChI=1S/C15H29O19P3/c16-7-1-27-10(13(7)19)4-31-36(23,24)34-15-9(18)3-29-12(15)6-32-37(25,26)33-14-8(17)2-28-11(14)5-30-35(20,21)22/h7-19H,1-6H2,(H,23,24)(H,25,26)(H2,20,21,22)/p-3/t7-,8-,9-,10+,11+,12+,13-,14-,15-/m0/s1
+SPECIES - TAX-511145
+SYNONYMS - rrlA
+//
+UNIQUE-ID - RRSA-RRNA
+TYPES - 16S-rRNAs
+COMMON-NAME - 16S ribosomal RNA (rrsA)
+COMMENT - The 16S rRNA is the RNA component of the small subunit (30S subunit) of the <i>E. coli</i> ribosome. 
+/
+/There are seven ribosomal RNA (rRNA) operons, called <i>rrsA</i>, <i>rrsB</i>, <i>rrsC</i>, <i>rrsD</i>, <i>rrsE</i>,
+/<i>rrsG</i>, and <i>rrsH</i>.  Each operon contains a 16S rRNA gene, a 23S rRNA gene, and a 5S rRNA gene
+/(except the <i>rrsD</i> operon, which contains two 5S rRNA genes) interspersed with various tRNA genes. 
+/Regarding nomenclature, "<i>rrs</i>" genes encode 16S rRNAs, "<i>rrl</i>" genes encode 23S rRNAs, and
+/"<i>rrf</i>" genes encode 5S rRNAs |CITS: [COLISALII]|.
+/
+/16S rRNA has been studied extensively.  Its sequence and structure has been described, its relationship to
+/ribosome assembly, structure, and function has been characterized, interactions between the 16S rRNA and
+/ribosomal proteins have been described, mutants have been analyzed.  16S rRNA is subject to post-transcriptional
+/processing, methylation, and pseudouridylation.  Possible roles for the modified nucleotides have been proposed
+/|CITS: [17389639]|; their location has been visualized in a cryo-EM structure of the ribosome |CITS: [25707802]|.  
+/
+/The 16S rRNA is targeted by a number of antibiotic agents.  The functional interactions between antibiotic sensitivity
+/and 16S rRNA have been examined in detail.
+/
+/Reviews describing these results are available.
+/
+/Regulation has been described in detail; for a review see |CITS: [12732305]|.
+/
+/Reviews: |CITS: [322825][346237][364316][94160][6380748][6363901][3293591][3048381][2655923][2658053]
+/[1693518][2215213][1764510][1720671][1379075][1379076][8022290][7969105][7484450][7937058][8721991]
+/[8721993][8722006][8722021][8722030][8594570][9016533][9204275][9322010][9414588][9399853][9478206]
+/[11694635][12762060]|
+COMPONENT-OF - CPLX0-3953
+DBLINKS - (ECOLIWIKI "b3851" NIL |kr| 3409616149 NIL NIL)
+GENE - EG30084
+NON-STANDARD-INCHI - InChI=1S/C15H29O19P3/c16-7-1-27-10(13(7)19)4-31-36(23,24)34-15-9(18)3-29-12(15)6-32-37(25,26)33-14-8(17)2-28-11(14)5-30-35(20,21)22/h7-19H,1-6H2,(H,23,24)(H,25,26)(H2,20,21,22)/p-3/t7-,8-,9-,10+,11+,12+,13-,14-,15-/m0/s1
+SPECIES - TAX-511145
+SYNONYMS - rrsA
+//
+UNIQUE-ID - selC-tRNA
+TYPES - SER-tRNAs
+COMMON-NAME - tRNA<SUP>sec</SUP>
+ANTICODON - UCA
+CITATIONS - 7033244:EV-AS-TAS:3370116019:shearer
+COMMENT - tRNA(sec) is a special tRNA that inserts selenocysteine at certain in-frame
+/UGA codons.
+/
+/tRNAs are the adapters that allow synthesis of proteins from mRNAs.
+/Each tRNA carries a specific amino acid to the ribosome for protein synthesis.
+/There, the tRNA recognizes an RNA codon with its own three-nucleotide
+/anticodon, thus allowing synthesis of a specific peptide based on an mRNA
+/template.
+/
+/tRNA(sec) can insert selenocysteine at certain in-frame
+/UGA codons |CITS: [3033637]|. The ability of tRNA(sec)
+/to insert selenocysteine appears to depend on the specific
+/sequence and folding of a stem-loop 3' to the insertion site |CITS: [1834670][1396569]|.
+/tRNA(sec) has
+/poor affinity for the normal elongation factor EF-Tu,
+/instead binding to the specialized |FRAME: EG10942-MONOMER| |CITS: [2408012][2531290]|.
+/The aminoacyl acceptor helix of tRNA(sec) promotes
+/binding to |FRAME: EG10942-MONOMER| and prevents binding to EF-Tu |CITS: [1939093][2524495]|. 
+/
+/tRNAs are processed to their active, mature forms by RNA cleavage
+/and by modification of their bases. RNA cleavage consists of
+/removal of both 5' and 3' extensions in a multistep process involving
+/many RNases |CITS: [11252717]|. RNases taking part in tRNA processing include |FRAME: CPLX0-3461|,
+/|FRAME: CPLX0-3601|, |FRAME: EG10858-MONOMER|,
+/|FRAME: EG11620-MONOMER|, and |FRAME: CPLX0-3602|. tRNAs are also subject to a
+/wide variety of base modifications catalyzed by proteins such as
+/|FRAME: EG11932-MONOMER|, |FRAME: EG10595-MONOMER|, |FRAME: G6364-MONOMER|, |FRAME: EG11344-MONOMER|,
+/|FRAME: G7199-MONOMER|, |FRAME: CPLX0-1101|, |FRAME: EG11779-MONOMER|, |FRAME: G7422-MONOMER|,
+/|FRAME: G7449-MONOMER|, |FRAME: EG11177-MONOMER|, |FRAME: EG10454-MONOMER|, |FRAME: EG10967-MONOMER|,
+/and |FRAME: EG11022-MONOMER|.
+/
+/Mature tRNAs are linked via a 3' CCA sequence to their cognate
+/amino acid in an ATP-dependent fashion by the appropriate
+/amino-acid-tRNA synthetase, as shown in the |FRAME: TRNA-CHARGING-PWY|.
+/tRNA(sec) is charged in a two-step process, being aminoacylated
+/with L-serine by |FRAME: SERS-CPLX|, then having that associated amino
+/acid converted to selenocysteine by |FRAME: CPLX0-1141|, as shown
+/in |FRAME: PWY0-901| |CITS: [2963963][1839607]|. 
+/Subsequently, these charged tRNAs interact with the ribosome
+/and template mRNA to generate polypeptides. The discovery of the
+/role of tRNA in protein synthesis is reviewed in detail in |CITS: [7033244]|.
+/
+/tRNA(sec) varies in areas that are otherwise invariant across 
+/most tRNAs |CITS: [2963963][2529478]|. Many of these differences
+/act to prevent incorrect addition of selenocysteine at random
+/UGA stop codons |CITS: [1370545]|. tRNA(sec) has an unusual
+/acceptor stem consisting of seven, rather than eight base pairs,
+/which is required for proper function |CITS: [1702199]|. 
+/
+/The solution structure of tRNA(sec)
+/has been chemically evaluated |CITS: [8510147]|.
+CREDITS - SRI
+CREDITS - paley
+DBLINKS - (ECOLIWIKI "b3658" NIL |kr| 3409616149 NIL NIL)
+GENE - EG30092
+GO-TERMS - GO:0005829
+GO-TERMS - GO:0030533
+^CITATIONS - 
+GO-TERMS - GO:0005737
+^CITATIONS - 
+LOCATIONS - CCO-CYTOSOL
+MODIFIED-FORM - modified-charged-selC-tRNA
+MODIFIED-FORM - charged-selC-tRNA
+NON-STANDARD-INCHI - InChI=1S/C15H29O19P3/c16-7-1-27-10(13(7)19)4-31-36(23,24)34-15-9(18)3-29-12(15)6-32-37(25,26)33-14-8(17)2-28-11(14)5-30-35(20,21)22/h7-19H,1-6H2,(H,23,24)(H,25,26)(H2,20,21,22)/p-3/t7-,8-,9-,10+,11+,12+,13-,14-,15-/m0/s1
+SPECIES - TAX-511145
+//
+UNIQUE-ID - modified-charged-selC-tRNA
+TYPES - Charged-SEC-tRNAs
+COMMON-NAME - L-selenocysteinyl-tRNA<SUP>sec</SUP>
+COMPONENT-OF - CPLX0-8053
+CREDITS - SRI
+CREDITS - paley
+NON-STANDARD-INCHI - InChI=1S/C3H7NOSe/c4-3(1-5)2-6/h1,3,6H,2,4H2/p+1/t3-/m1/s1
+SPECIES - TAX-511145
+SYNONYMS - L-selenocysteinyl-tRNA(ser)
+UNMODIFIED-FORM - selC-tRNA
+//
+UNIQUE-ID - charged-selC-tRNA
+TYPES - Charged-SER-tRNAs
+TYPES - L-seryl-SEC-tRNAs
+COMMON-NAME - L-seryl-tRNA<SUP>sec</SUP>
+CREDITS - SRI
+CREDITS - paley
+NON-STANDARD-INCHI - InChI=1S/C3H7NO2/c4-3(1-5)2-6/h1,3,6H,2,4H2/p+1/t3-/m1/s1
+SPECIES - TAX-511145
+UNMODIFIED-FORM - selC-tRNA
+//
+UNIQUE-ID - RNPB-RNA
+TYPES - Misc-RNAs
+COMMON-NAME - RNase P catalytic RNA component
+CITATIONS - 6197186:EV-EXP-IDA:3694464675:fulcher
+COMMENT - Gene <i>rnpB</i> encodes a catalytic RNA that is capable of cleaving other RNAs. The 1989 Nobel Prize in chemistry was awarded to Sidney Altman and Thomas Cech for the discovery of catalytic RNAs. Altman's work focused on the characterization of <i>E. coli</i> RnpB RNA |CITS: [1701103]|.
+/
+/RnpB RNA and RnpA protein together comprise the ribonuclease P (RNase P) holoenzyme |CITS: [386349][6164392]|. RNase P acts in processing of tRNA precursor molecules |CITS: [1104100][167017][4560501]| and the stable 4.5 S RNA precursor |CITS: [794064]|. The RnpB RNA subunit alone exhibits catalytic activity toward tRNA precursors <i>in vitro</i> under high ionic strength conditions, but requires the protein subunit under physiological conditions and for efficient activity toward a 4.5 S RNA precursor substrate |CITS: [6197186][6199841][1717693][16163391]|. The protein subunit stabilizes the global structure of the RNA component, allowing it to exhibit the properties of the holoenzyme complex |CITS: [16163391]|. RNase P also exhibits activity toward C4 repressor RNA of bacteriophages P1 and P7, which may indicate a role for RNase P in lysogeny/lysis regulation |CITS: [7597035]|, and toward CI RNA, which is involved in immunity to bacteriophage P4 |CITS: [12051840]|. RNase P, and its RNA subunit alone, can also cleave a tRNA-like structure in turnip yellow mosaic virus |CITS: [3359488]|. RNase P can also initiate precursor tRNA processing at the 3' ends of some long primary transcripts by endonucleolytic cleavage of the Rho-independent transcription terminator |CITS: [25183518][17981836][27288443]|.
+/
+/Activity of the RNase P holoenzyme and RnpB RNA on precursor tRNA substrates has been extensively characterized |CITS: [1104100][167017][1099089][1099090][1103144][2474662][765341][2199767][1701142][6197186][6199841][3023854][2423112][3359488][2468523][2266141][1718000][3061798][7680114][7535857][7730292][8628683] [7527466][8341661][8799129][9558342][9571638][9790839][11170376][11871663][1371349][10339557][10637323][10653690][10843849][11226427][11926814][12904300][19932118][22315063]|.
+/
+/Substrate interaction and specificity for <i>E. coli</i> RnpB RNA and holoenzyme have been examined in detail. Approaches have included: studies using native <i>E. coli</i> or heterologous precursor tRNA substrates |CITS: [6380759][770465][6209276][3516691][1371348][2447080][3062578][3276688][1706437][1279179][6351914][16932744][2453026][19906695][23362254][27336323]|; chemical modification of precursor tRNA substrates and RnpB RNA |CITS: [1901990][2480641][1707681][8441616][8756410][7681942][7688143][7521296][7540978][8972769][9860878][9917070][10026268][11345434][11453068][17570824][19793868]|; analysis of mutations in precursor tRNA substrates, RnpB RNA and the holoenzyme |CITS: [2474662][2843531][3081499][3123492][6298744][7680119][7685824][7688247][7525271][7797595][8144499][8634910][8665413][8947568][9558342][9790839][10652227][10359770][12756331][14510490][17135488][16822954]|; studies of model substrates for RnpB RNA |CITS: [2443980][2266140][2266141][1379304][1281315][7688454][7694652][8650223][8758997][12457557][12507473][11377419][11454206][12761291][12951523][14510487][14510496][14586127][15477392][15644198][16244456][16332695][17719605][18452950][24097434][19749247][19008262]|; and tertiary structure modeling |CITS: [7515186][9174092]|. Additional substrates studied include a bacteriophage phi80-induced RNA |CITS: [778851]|, the <i>E. coli</i> <i>btuB</i> encoded coenzyme B12 riboswitch |CITS: [16061811]|, turnip yellow mosaic virus RNA |CITS: [3359488]|, and polycistronic tRNA transcripts |CITS: [17981836][18033800][25183518]|. RnpA also participates in substrate binding and recognition |CITS: [19932118][24056935][25273134][27693057]|.
+/
+/Early studies implicated RNase P in RNA processing and explored the effects of <i>rnpB</i> mutants |CITS: [6154228][6195144][3047674]|. Targeted point mutagenesis of <i>rnpB</i> was demonstrated |CITS: [3402736]|. The position of the <i>rnpB</i> gene on the <i>E. coli</i> K-12 chromosome was mapped |CITS: [1705543]|.
+/
+/RnpB RNA interacts with a divalent cation cofactor (preferentially Mg<sup>2+</sup>) |CITS: [1718000][7683057][8499432][9054547][9405616][9671051][10493856][10786842][11266542][11980722][15867194]|. The association of RnpB RNA and RnpA protein has been examined |CITS: [3526344][2459398][2480345][8312258][8312259][9135114][10026248][10652223][10656815][11557817][12507471][16155184][16932744][17652407][19114042][19917291][20211679]|. RnpB RNA is important for the folding and solubility of RnpA protein |CITS: [26517763]|. The enzyme complex exhibits 1:1 stoichiometry of RnpB RNA to RnpA protein |CITS: [2459398][8312258][9558342]|.
+/
+/RNase P fractionates with the inner membrane |CITS: [1722976]|. Overproduced RNase P enzyme is also localized to the inner membrane, whereas overproduced RnpB RNA is localized to the cytoplasm |CITS: [1943711]|.
+/
+/RnpB RNA is essential for cell viability |CITS: [1699929]|. Mutations in RnpB RNA and in the RnpA protein subunit of RNase P exhibit different effects on tRNA precursor processing |CITS: [2464697]|. Mutations in RnpB RNA have been evaluated with respect to effects on RNase P activity |CITS: [2472671][2421917][2435547][2433455][2459394][2480641][3123492][7685824][7690469][8628683][8676378][8947568][8972768][10500154][12234679][17150548][15215612][15527768][15618639]|. Truncation of both termini of RnpB RNA completely disrupts RNase P activity, whereas limited truncation of either terminus does not |CITS: [2421917]|. The <i>ts709</i> mutation encodes substitutions at nucleotide positions 89 and 365 resulting in destabilization of the RNA |CITS: [6200826]|. Deletion mutant RNAs can complement activity in <i>trans</i> |CITS: [1741379]|.
+/
+/Bacterial RNase P RNA subunits are classified into A-type (ancestral-type) found in <i>E. coli</i>, and B-type (Bacillus-type) |CITS: [16470227]|. They have homologs across all three kingdoms of life |CITS: [9174091]|. They consist of a specificity domain and a catalytic domain |CITS: [22626870]|. Primary and secondary structural features of <i>E. coli</i> RnpB RNA have been examined and its tertiary structure modeled |CITS: [1719634][1370627][2466843][2472671][1722464][6183002][7680723][8702618][6085007][2421764][2433455][2440726][2450574][2459394][2459398][2467291][7507234][7511814][7521297][7685824][7690469][8312258][8668532][8718685][7515186][8307015][8636995][9174093][9482748][9642060][9784367][9917070][10026248][10445877][10500154][10999599][11124019][11266542][15576680][16043496][16581805][16750220][18029741][17986617][17998289][18982298]|. NMR solution structures of segments of <i>E. coli</i> RnpB are reported |CITS: [8668532][10999599]|. A solution structure of the entire molecule was determined using small angle X-ray scattering and SHAPE analysis |CITS: [21531920]|. Crystal structures of RNase P RNA or its component domains have been solved for <i>Bacillus subtilis</i> |CITS: [12610630]|, <i>Thermus thermophilus</i> |CITS: [15459389]|, <i>Bacillus stearothermophilus</i> |CITS: [16157868]|, and <i>Thermotoga maritima</i> |CITS: [16113684]|(and holoenzyme |CITS: [21076397]|).
+/
+/The RnpB RNA is subject to post-transcriptional processing |CITS: [6183002][6194527][6192433][6351058][7489504][8702618][9175883][9889289][12372605][11566192][11952897][12000793][12864847][16105832]|.
+/
+/RnpB RNA has been isolated from many other organisms, and the gene encoding RnpB has been isolated from other members of the Enterobacteriaceae |CITS: [2443911]|. A database of RNase P RNAs has been developed |CITS: [7524025]|. Evolutionary aspects of RnpB have been considered |CITS: [12834304][9174096]|.
+/
+/RNase P can be directed or engineered to cleave exogenous targets of appropriate structure, and therapeutic applications have been investigated |CITS: [2110159][2194161][1697102][1700426][10525416][10744757][10788608][11381134][11826982][1373488][1601867][7479948][7533740][7539787][7688115][8233817][8600449][9204433][9238000][9454963][10811889][10903512][10931926][10966788][11292334][12400701][12729746][12867424][12903284][11812131][12188884][15104592][10339557][10648380][14970389][15756425][17387154][19005569][18567813][23300569][24885776][15169770][15756425][17387154][18263737][18567813]|. Inhibitor |CITS: [10339557][11821058][18084035][14624000]| and antisense |CITS: [14523922][14523923][16901906][27604960]| approaches have also been explored.
+/
+/Regulation has been described |CITS: [6194527][6183002][2466843][1722464][1397490][9015366][9085274][9175883][11811987][6204333][8780771][14585931][15879709][18677095][18092807]|.
+/
+/Reviews: |CITS: [2423941][2471397][1722425][7682412][8901494][8559060][8901496][8901505][9634774][10068996][11252717][11587766][12957377][15104592][17976837][20211282][26569326]|.
+/
+COMPONENT-OF - CPLX0-1382
+CREDITS - SRI
+CREDITS - paley
+DBLINKS - (ECOLIWIKI "b3123" NIL |kr| 3409616149 NIL NIL)
+GENE - EG30069
+GO-TERMS - GO:0001682
+^CITATIONS - 3123492:EV-EXP-IGI:3694205559:fulcher
+GO-TERMS - GO:0004526
+^CITATIONS - 2423112:EV-EXP-IDA:3694203077:fulcher
+^CITATIONS - 6197186:EV-EXP-IDA:3694202861:fulcher
+^CITATIONS - 6380759:EV-EXP-IDA:3694202875:fulcher
+GO-TERMS - GO:0005515
+^CITATIONS - 8312259:EV-EXP-IPI:3694202395:fulcher::UniProtKB\:P0A7Y8
+^CITATIONS - 2459398:EV-EXP-IPI:3694202431:fulcher::UniProtKB\:P0A7Y8
+GO-TERMS - GO:0008033
+^CITATIONS - 2433455:EV-EXP-IGI:3694202273:fulcher
+SPECIES - TAX-511145
+SYNONYMS - RnpB
+SYNONYMS - RnpB RNA
+SYNONYMS - M1 ribozyme
+SYNONYMS - RNase P ribozyme
+SYNONYMS - ribonuclease P ribozyme
+SYNONYMS - RNase P RNA
+SYNONYMS - M1 RNA
+SYNONYMS - RNase P catalytic RNA subunit
+SYNONYMS - ribonuclease P catalytic RNA component
+SYNONYMS - catalytic subunit of RNase P
+//

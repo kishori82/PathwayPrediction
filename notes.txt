@@ -1,0 +1,12 @@
+https://metacyc.org/pwy-search.shtml
+
+types of reacions
+1.14.13.101-RXN
+	1.14.13.101
+	ENZRXN-19419
+	ENZRXN-19418
+	ENZRXN-19414
+RXN-17545
+RXN-15037
+	1.1.98.5
+

@@ -36,11 +36,14 @@ def createParser():
 
     parser = OptionParser(usage=usage, epilog=epilog)
 
-    parser.add_option("-a", "--annot_filee", dest="annot_file",
+    parser.add_option("-d", "--data_folder", dest="data_folder",
                       help='the annotation file [REQUIRED]')
 
     parser.add_option("-s", "--sample", dest="sample_file",
                       help='the sample file with annotaiton [REQUIRED]')
+
+    parser.add_option("-r", "--reactions", dest="reactions",
+                      help='the reactions file with ec number [REQUIRED]')
 
 
 def removeHTMLtag(line):
@@ -66,12 +69,142 @@ def main(argv, errorlogger = None, runstatslogger = None):
 
 
     
+    unique_id = re.compile(r'UNIQUE-ID - (.*)$')
+    reaction_list = re.compile(r'REACTION-LIST - (.*)$')
+    ec_number = re.compile(r'EC-NUMBER - .*(\d+[.]\d+[.]\d+[.]\d+)')
+    enzymatic_reaction = re.compile(r'ENZYMATIC-REACTION - (.*)$')
+
     common_name = re.compile(r'COMMON-NAME - (.*)$')
     synonym = re.compile(r'SYNONYMS - (.*)$')
 
+    # read PATHWAYS and their REACTIONS
+    pathways = {}
+    with open(opts.data_folder + '/pathways.dat', 'r' ) as fin:
+      for line in fin:
+         line = line.strip()
+         resPwy = unique_id.search(line) 
+         if resPwy:
+            pwy = resPwy.group(1)
+            pathways[pwy] = []
+       
+         resRxn = reaction_list.search(line) 
+         if resRxn:
+            pathways[pwy].append(resRxn.group(1))
+       
+
+    # read REACTIONS to ENZREACTIONS
+    enzrxn_to_reactions = {}
+    reactions = {}
+    with open(opts.data_folder + '/reactions.dat', 'r' ) as fin:
+      for line in fin:
+         line = line.strip()
+         #print line
+         resRxn = unique_id.search(line) 
+         if resRxn:
+            rxn=resRxn.group(1)
+            reactions[rxn] = { 'EC': [],  'ENZRXNS':[] }
+       
+         resEC = ec_number.search(line) 
+         if resEC:
+            EC=resEC.group(1)
+            reactions[rxn]['EC'].append(EC)
+       
+         resEnzRxn = enzymatic_reaction.search(line) 
+         if resEnzRxn:
+            enzrxn=resEnzRxn.group(1)
+            reactions[rxn]['ENZRXNS'].append(enzrxn)
+            enzrxn_to_reactions[enzrxn] = rxn
+       
+
+
+    
+    # create ANNOT to the EZNRXN 
+    annotation_to_enzrxn = {}
     annotations = {}
     c = 1
-    with open(opts.annot_file, 'r' ) as fin:
+    with open(opts.data_folder + '/enzrxns.dat', 'r' ) as fin:
+      for line in fin:
+         #line = line.lower()
+         resEnzRxn = unique_id.search(line) 
+         if resEnzRxn:
+             enzrxn=resEnzRxn.group(1)
+
+         annot=None
+         res = common_name.search(line) 
+         if res:
+            annot = removeHTMLtag(res.group(1))
+            annot =  modifyHTMLsymbol(annot)
+       
+         res1 = synonym.search(line) 
+         if res1:
+            annot = removeHTMLtag(res1.group(1))
+            annot =  modifyHTMLsymbol(annot)
+
+         if annot:
+             annotid = "ANOT-" + str(c)
+             c += 1
+             annotations[annotid] = annot.lower()
+             annotation_to_enzrxn[annotid] = enzrxn
+             #print annotid, annotation_to_enzrxn[annotid] 
+
+
+    word_to_annotids ={}
+    for annotid in annotations:
+      fields = [ x.strip() for x in annotations[annotid].split(' ') ]
+      for field in fields:  
+         if not  field in word_to_annotids:
+            word_to_annotids[field] = []
+         word_to_annotids[field].append(annotid)
+
+    
+    # read the sample annotations and see the matches to the annots
+    with gzip.open(opts.sample_file, 'r' ) as fin:
+      for line in fin:
+        annot_matches={}
+        line = line.lower()
+        fields = [ x.strip() for x in line.split('\t') ]
+        print "=====>", line
+        if len(fields) ==3 and fields[2]: 
+           words = [ x.strip() for x in fields[2].split(' ') ]
+           for word in words:  
+             if word in word_to_annotids:
+                for annotid in word_to_annotids[word]:
+                  if not annotid in annot_matches:
+                     annot_matches[annotid] = 0
+                  annot_matches[annotid] += 1
+
+             for annotid in annot_matches:
+                if annot_matches[annotid] == len(words) or annot_matches[annotid] >= 2:
+                   print '\t\t',annotations[annotid]
+                   break
+           
+        
+          
+
+         
+
+
+# the main function of metapaths
+if __name__ == "__main__":
+    createParser()
+    main(sys.argv[1:])
+
+    with open(opts.data_folder + '/reactions.dat', 'r' ) as fin:
+      for line in fin:
+         line = line.strip()
+         print line
+         res = unique_id.search(line) 
+         if res:
+            print res.group(1)
+       
+
+    sys.exit(0)
+
+
+    
+    annotations = {}
+    c = 1
+    with open(opts.data_folder + '/enzrxns.dat', 'r' ) as fin:
       for line in fin:
          #line = line.lower()
          annot=None
@@ -105,8 +238,8 @@ def main(argv, errorlogger = None, runstatslogger = None):
         line = line.lower()
         fields = [ x.strip() for x in line.split('\t') ]
         print "=====>", line
-        if len(fields) ==2 and fields[1]: 
-           words = [ x.strip() for x in fields[1].split(' ') ]
+        if len(fields) ==3 and fields[2]: 
+           words = [ x.strip() for x in fields[2].split(' ') ]
            for word in words:  
              if word in indexes:
                 for annotid in indexes[word]:
@@ -115,7 +248,7 @@ def main(argv, errorlogger = None, runstatslogger = None):
                   annot_matches[annotid] += 1
 
              for annotid in annot_matches:
-                if annot_matches[annotid] >= 2:
+                if annot_matches[annotid] == len(words) or annot_matches[annotid] >= 2:
                    print '\t\t',annotations[annotid]
                    break
            
