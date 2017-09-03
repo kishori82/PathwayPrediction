@@ -97,6 +97,7 @@ def main(argv, errorlogger = None, runstatslogger = None):
 
     # read REACTIONS to ENZREACTIONS
     enzrxn_to_reactions = {}
+    ec_to_reactions = {}
     reactions = {}
     with open(opts.data_folder + '/reactions.dat', 'r' ) as fin:
       for line in fin:
@@ -111,6 +112,7 @@ def main(argv, errorlogger = None, runstatslogger = None):
          if resEC:
             EC=resEC.group(1)
             reactions[rxn]['EC'].append(EC)
+            ec_to_reactions[EC] = rxn
        
          resEnzRxn = enzymatic_reaction.search(line) 
          if resEnzRxn:
@@ -118,7 +120,6 @@ def main(argv, errorlogger = None, runstatslogger = None):
             reactions[rxn]['ENZRXNS'].append(enzrxn)
             enzrxn_to_reactions[enzrxn] = rxn
        
-
 
     
     # create ANNOT to the EZNRXN 
@@ -173,6 +174,16 @@ def main(argv, errorlogger = None, runstatslogger = None):
         fields = [ x.strip() for x in line.split('\t') ]
         #print "=====>", line
         orfCount += 1
+
+        if fields[1]: 
+          ec = fields[1]
+          if ec in ec_to_reactions:
+             rxn = ec_to_reactions[ec]
+             if not rxn in rxns_in_sample:
+                 rxns_in_sample[rxn] = 0
+             rxns_in_sample[rxn] += 1
+             continue
+
         if len(fields) ==3 and fields[2]: 
            words = [ x.strip() for x in fields[2].split(' ') ]
            for word in words:  
@@ -188,9 +199,9 @@ def main(argv, errorlogger = None, runstatslogger = None):
                    #print '\t\t\t', annotation_to_enzrxn[annotid], enzrxn_to_reactions[annotation_to_enzrxn[annotid]]
                    rxn=enzrxn_to_reactions[annotation_to_enzrxn[annotid]]
                    hitCount += 1
-                 
                    if not rxn in rxns_in_sample:
                       rxns_in_sample[rxn] = 0
+
                    rxns_in_sample[rxn] += 1
                    break
            
