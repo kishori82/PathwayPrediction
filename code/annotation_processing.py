@@ -181,85 +181,8 @@ def main(argv, errorlogger = None, runstatslogger = None):
         
           
 
-         
-
 
 # the main function of metapaths
 if __name__ == "__main__":
     createParser()
     main(sys.argv[1:])
-
-    with open(opts.data_folder + '/reactions.dat', 'r' ) as fin:
-      for line in fin:
-         line = line.strip()
-         print line
-         res = unique_id.search(line) 
-         if res:
-            print res.group(1)
-       
-
-    sys.exit(0)
-
-
-    
-    annotations = {}
-    c = 1
-    with open(opts.data_folder + '/enzrxns.dat', 'r' ) as fin:
-      for line in fin:
-         #line = line.lower()
-         annot=None
-         res = common_name.search(line) 
-         if res:
-            annot = removeHTMLtag(res.group(1))
-            annot =  modifyHTMLsymbol(annot)
-       
-         res1 = synonym.search(line) 
-         if res1:
-            annot = removeHTMLtag(res1.group(1))
-            annot =  modifyHTMLsymbol(annot)
-
-         if annot:
-             annotid = "ANOT-" + str(c)
-             c += 1
-             annotations[annotid] = annot.lower()
-
-    indexes ={}
-    for annotid in annotations:
-      fields = [ x.strip() for x in annotations[annotid].split(' ') ]
-      for field in fields:  
-         if not  field in indexes:
-            indexes[field] = []
-         indexes[field].append(annotid)
-
-    
-    with gzip.open(opts.sample_file, 'r' ) as fin:
-      for line in fin:
-        annot_matches={}
-        line = line.lower()
-        fields = [ x.strip() for x in line.split('\t') ]
-        print "=====>", line
-        if len(fields) ==3 and fields[2]: 
-           words = [ x.strip() for x in fields[2].split(' ') ]
-           for word in words:  
-             if word in indexes:
-                for annotid in indexes[word]:
-                  if not annotid in annot_matches:
-                     annot_matches[annotid] = 0
-                  annot_matches[annotid] += 1
-
-             for annotid in annot_matches:
-                if annot_matches[annotid] == len(words) or annot_matches[annotid] >= 2:
-                   print '\t\t',annotations[annotid]
-                   break
-           
-        
-          
-
-         
-
-
-# the main function of metapaths
-if __name__ == "__main__":
-    createParser()
-    main(sys.argv[1:])
-
