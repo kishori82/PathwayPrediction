@@ -78,7 +78,7 @@ def main(argv, errorlogger = None, runstatslogger = None):
     synonym = re.compile(r'SYNONYMS - (.*)$')
 
     # read PATHWAYS and their REACTIONS
-    pathways = {}
+    pathways_to_rxns = {}
     rxns_to_pathways = {}
     with open(opts.data_folder + '/pathways.dat', 'r' ) as fin:
       for line in fin:
@@ -86,12 +86,12 @@ def main(argv, errorlogger = None, runstatslogger = None):
          resPwy = unique_id.search(line) 
          if resPwy:
             pwy = resPwy.group(1)
-            pathways[pwy] = []
+            pathways_to_rxns[pwy] = []
        
          resRxn = reaction_list.search(line) 
          if resRxn:
             rxn=resRxn.group(1)
-            pathways[pwy].append(rxn)
+            pathways_to_rxns[pwy].append(rxn)
             rxns_to_pathways[rxn] = pwy
        
 
