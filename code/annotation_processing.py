@@ -92,7 +92,9 @@ def main(argv, errorlogger = None, runstatslogger = None):
          if resRxn:
             rxn=resRxn.group(1)
             pathways_to_rxns[pwy].append(rxn)
-            rxns_to_pathways[rxn] = pwy
+            if not rxn in rxns_to_pathways:
+               rxns_to_pathways[rxn] = []
+            rxns_to_pathways[rxn].append(pwy)
        
 
     # read REACTIONS to ENZREACTIONS
@@ -213,10 +215,11 @@ def main(argv, errorlogger = None, runstatslogger = None):
 
     for rxn, count in rxns_in_sample.iteritems():
       if rxn in rxns_to_pathways:
-       pwy = rxns_to_pathways[rxn] 
-       if not pwy in pwys_in_sample:
-         pwys_in_sample[pwy] = 0
-       pwys_in_sample[pwy] += 1
+       pwys = rxns_to_pathways[rxn] 
+       for pwy in pwys:
+          if not pwy in pwys_in_sample:
+            pwys_in_sample[pwy] = 0
+          pwys_in_sample[pwy] += 1
 
     print '# orfs of the sample ', orfCount
     print '# orfs matched with metacyc reactions :', hitCount
