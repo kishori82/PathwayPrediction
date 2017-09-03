@@ -25,6 +25,13 @@ except:
 
 usage= sys.argv[0] + """ -i input_file -n ncbi_tree  -o <output file>"""
 
+def fprintf(file, fmt, *args):
+   file.write(fmt % args)
+   
+def printf(fmt, *args):
+   sys.stdout.write(fmt % args)
+   sys.stdout.flush()
+ 
 parser = None
 def createParser():
     global parser
@@ -226,6 +233,86 @@ def main(argv, errorlogger = None, runstatslogger = None):
     print "# reactions predicted :", len(rxns_in_sample.keys())
     print '# pathways predicted  :', len(pwys_in_sample.keys())
           
+
+    pwy_to_x = {}
+    x_to_pwy = {}
+    x = 1
+    for pwy in pathways_to_rxns:
+        pwy_to_x[pwy]='x' + str(x)
+        x_to_pwy['x' + str(x)] = pwy
+        x +=1
+
+    with open('input.lp', 'w') as  fout:
+        fprintf(fout, "Minimize\n") 
+
+        fprintf(fout, "  obj:") 
+        for pwy in pwys_in_sample:
+            fprintf(fout, " + %s", pwy_to_x[pwy]) 
+        fprintf(fout, "\n") 
+
+        # subject to
+        fprintf(fout, "Subject To\n") 
+
+        c=1
+        for rxn in rxns_in_sample:
+           if rxn in rxns_to_pathways:
+             c +=1
+             fprintf(fout, "  %s: ", 'c' +str(c)) 
+             for pwy in rxns_to_pathways[rxn]:
+                fprintf(fout, " + %s", pwy_to_x[pwy]) 
+             fprintf(fout, " >= 1\n") 
+
+        fprintf(fout, "Bounds\n") 
+        # variable types
+        fprintf(fout, "Binary\n") 
+        for pwy in pwys_in_sample:
+            fprintf(fout, "  %s\n", pwy_to_x[pwy]) 
+
+        # End
+        fprintf(fout, "End\n") 
+        
+    command = "glpsol"  + " --lp input.lp -o output.sol >> /dev/null"
+
+    os.system(command)
+
+    try:
+       glpout = open('output.sol','r')
+    except IOError:
+       print """Cannot open \'ouptut.sol\' to read solution"""
+       sys.exit(0)
+    
+    solLines = glpout.readlines()
+    glpout.close()
+
+    activity = re.compile(r'Activity')
+    sol = re.compile(r'\d+\s([x]\d+)\s+[*]\s+([0-1])')
+
+    count = 0
+    i = 1
+    for line in solLines:
+       line = line.strip()
+       if activity.search(line):
+           count += 1
+       if count < 2:
+          continue
+
+
+       res= sol.search(line)
+       if res:
+           xpwy=res.group(1)
+           result=res.group(2)
+           if result=='1':
+             print i, x_to_pwy[xpwy]
+             i+=1
+              
+
+        
+       
+    
+    
+       
+
+
 
 
 # the main function of metapaths

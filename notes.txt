@@ -11,3 +11,6 @@ RXN-15037
 	1.1.98.5
 
 python annotation_processing.py -d ../metacyc/metacyc_data/ -s ../data/si4093112_ec_product.txt.gz |  more
+
+install glpsol
+sudo apt-get install glpk-utils libglpk-dev glpk-doc python-glpk
