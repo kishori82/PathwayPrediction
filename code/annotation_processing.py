@@ -160,6 +160,15 @@ def main(argv, errorlogger = None, runstatslogger = None):
              annotation_to_enzrxn[annotid] = enzrxn
              #print annotid, annotation_to_enzrxn[annotid] 
 
+    # read the coreness pathway
+    core_pathways={}
+
+    core_threshold = 75
+    with open(opts.data_folder + '/core_pathways.txt', 'r' ) as fin:
+      for line in fin:
+         fields = [ x.strip() for x in line.split('\t') ]
+         if core_threshold < float(fields[2]):
+            core_pathways[fields[1]] = float(fields[2])
 
     word_to_annotids ={}
     for annotid in annotations:
@@ -234,6 +243,9 @@ def main(argv, errorlogger = None, runstatslogger = None):
     print '# pathways predicted  :', len(pwys_in_sample.keys())
           
 
+
+
+
     pwy_to_x = {}
     x_to_pwy = {}
     x = 1
@@ -289,6 +301,7 @@ def main(argv, errorlogger = None, runstatslogger = None):
 
     count = 0
     i = 1
+    pathways_present = {}
     for line in solLines:
        line = line.strip()
        if activity.search(line):
@@ -302,17 +315,15 @@ def main(argv, errorlogger = None, runstatslogger = None):
            xpwy=res.group(1)
            result=res.group(2)
            if result=='1':
-             print i, x_to_pwy[xpwy]
+    #         print i, x_to_pwy[xpwy]
+             pathways_present[x_to_pwy[xpwy]] = True
              i+=1
-              
-
-        
-       
-    
-    
-       
-
-
+    print '# core pathways :', len(core_pathways)
+    print '# pathways finally  predicted  :', len(pathways_present)
+    for pwy in  pwys_in_sample:
+       if pwy in core_pathways:
+           pathways_present[pwy] = True
+    print '# pathways predicted with core :', len(pathways_present)
 
 
 # the main function of metapaths
