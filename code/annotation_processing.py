@@ -79,6 +79,7 @@ def main(argv, errorlogger = None, runstatslogger = None):
 
     # read PATHWAYS and their REACTIONS
     pathways = {}
+    rxns_to_pathways = {}
     with open(opts.data_folder + '/pathways.dat', 'r' ) as fin:
       for line in fin:
          line = line.strip()
@@ -89,7 +90,9 @@ def main(argv, errorlogger = None, runstatslogger = None):
        
          resRxn = reaction_list.search(line) 
          if resRxn:
-            pathways[pwy].append(resRxn.group(1))
+            rxn=resRxn.group(1)
+            pathways[pwy].append(rxn)
+            rxns_to_pathways[rxn] = pwy
        
 
     # read REACTIONS to ENZREACTIONS
@@ -156,14 +159,20 @@ def main(argv, errorlogger = None, runstatslogger = None):
             word_to_annotids[field] = []
          word_to_annotids[field].append(annotid)
 
+
+    # keeps track for the reactions
+    rxns_in_sample={}
     
+    orfCount = 0
+    hitCount = 0
     # read the sample annotations and see the matches to the annots
     with gzip.open(opts.sample_file, 'r' ) as fin:
       for line in fin:
         annot_matches={}
         line = line.lower()
         fields = [ x.strip() for x in line.split('\t') ]
-        print "=====>", line
+        #print "=====>", line
+        orfCount += 1
         if len(fields) ==3 and fields[2]: 
            words = [ x.strip() for x in fields[2].split(' ') ]
            for word in words:  
@@ -175,10 +184,33 @@ def main(argv, errorlogger = None, runstatslogger = None):
 
              for annotid in annot_matches:
                 if annot_matches[annotid] == len(words) or annot_matches[annotid] >= 2:
-                   print '\t\t',annotations[annotid]
+                   #print '\t\t',annotations[annotid]
+                   #print '\t\t\t', annotation_to_enzrxn[annotid], enzrxn_to_reactions[annotation_to_enzrxn[annotid]]
+                   rxn=enzrxn_to_reactions[annotation_to_enzrxn[annotid]]
+                   hitCount += 1
+                 
+                   if not rxn in rxns_in_sample:
+                      rxns_in_sample[rxn] = 0
+                   rxns_in_sample[rxn] += 1
                    break
            
-        
+    # the set of reactions present and their number
+    #for rxn, count in rxns_in_sample.iteritems():
+    #    print rxn, count
+
+    pwys_in_sample={}
+
+    for rxn, count in rxns_in_sample.iteritems():
+      if rxn in rxns_to_pathways:
+       pwy = rxns_to_pathways[rxn] 
+       if not pwy in pwys_in_sample:
+         pwys_in_sample[pwy] = 0
+       pwys_in_sample[pwy] += 1
+
+    print '# orfs of the sample ', orfCount
+    print '# orfs matched with metacyc reactions :', hitCount
+    print "# reactions predicted :", len(rxns_in_sample.keys())
+    print '# pathways predicted  :', len(pwys_in_sample.keys())
           
 
 
