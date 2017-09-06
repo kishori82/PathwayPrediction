@@ -322,8 +322,11 @@ def main(argv, errorlogger = None, runstatslogger = None):
     print '# pathways finally  predicted  :', len(pathways_present)
     for pwy in  pwys_in_sample:
        if pwy in core_pathways:
-           pathways_present[pwy] = True
+           pass
+           #pathways_present[pwy] = True
     print '# pathways predicted with core :', len(pathways_present)
+    for pwy in pathways_present:
+       print pwy
 
 
 # the main function of metapaths
