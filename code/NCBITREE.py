@@ -5,10 +5,7 @@ try:
      import sys, traceback, re, gzip
      import math
 except:
-     print """ Could not load some user defined  module functions"""
-     print """ Make sure your typed \'source RiboCensusrc\'"""
-     print """ """
-     print traceback.print_exc(10)
+     print(traceback.print_exc(10))
      sys.exit(3)
 
 
@@ -35,7 +32,7 @@ class NCBITREE:
         self.taxid_to_ptaxid = {}
 
         self.loadtreefile(filename)
-        print filename,  len(self.taxid_to_ptaxid.keys())
+        print(filename,  len(self.taxid_to_ptaxid.keys()))
 
         self.name_pathways={}
         self.id_pathways={}
@@ -96,7 +93,7 @@ class NCBITREE:
 
 
     def print_tree(self, rid, depth=0, limit=1000000):
-        print '\t'*depth, self.id_to_name[rid]
+        print('\t'*depth, self.id_to_name[rid])
         cids = self.taxid_to_ptaxid[rid][3].keys()
         ctr = 0
         for cid in cids:

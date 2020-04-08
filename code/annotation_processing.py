@@ -10,6 +10,7 @@ __maintainer__ = "Kishori M Konwar"
 __status__ = "Release"
 
 try:
+     import traceback
      import os, re, glob, operator, sys, gzip, random
      from NCBITREE import NCBITREE
      from os import makedirs, sys, remove, rename
@@ -17,9 +18,10 @@ try:
      from optparse import OptionParser
 
 except:
-     print """ Could not load some user defined  module functions"""
-     print """ Make sure your typed 'source MetaPathwaysrc'"""
-     print """ """
+     print(""" Could not load some user defined  module functions""")
+     print(""" """)
+     print(traceback.print_exc(10))
+
      sys.exit(3)
 
 
@@ -237,10 +239,10 @@ def main(argv, errorlogger = None, runstatslogger = None):
             pwys_in_sample[pwy] = 0
           pwys_in_sample[pwy] += 1
 
-    print '# orfs of the sample ', orfCount
-    print '# orfs matched with metacyc reactions :', hitCount
-    print "# reactions predicted :", len(rxns_in_sample.keys())
-    print '# pathways predicted  :', len(pwys_in_sample.keys())
+    print('# orfs of the sample ', orfCount)
+    print('# orfs matched with metacyc reactions :', hitCount)
+    print("# reactions predicted :", len(rxns_in_sample.keys()))
+    print('# pathways predicted  :', len(pwys_in_sample.keys()))
           
 
 
@@ -290,7 +292,7 @@ def main(argv, errorlogger = None, runstatslogger = None):
     try:
        glpout = open('output.sol','r')
     except IOError:
-       print """Cannot open \'ouptut.sol\' to read solution"""
+       print("""Cannot open \'ouptut.sol\' to read solution""")
        sys.exit(0)
     
     solLines = glpout.readlines()
@@ -318,15 +320,15 @@ def main(argv, errorlogger = None, runstatslogger = None):
     #         print i, x_to_pwy[xpwy]
              pathways_present[x_to_pwy[xpwy]] = True
              i+=1
-    print '# core pathways :', len(core_pathways)
-    print '# pathways finally  predicted  :', len(pathways_present)
+    print('# core pathways :', len(core_pathways))
+    print('# pathways finally  predicted  :', len(pathways_present))
     for pwy in  pwys_in_sample:
        if pwy in core_pathways:
            pass
            #pathways_present[pwy] = True
-    print '# pathways predicted with core :', len(pathways_present)
+    print('# pathways predicted with core :', len(pathways_present))
     for pwy in pathways_present:
-       print pwy
+       print(pwy)
 
 
 # the main function of metapaths

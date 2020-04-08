@@ -16,9 +16,9 @@ try:
      from optparse import OptionParser
 
 except:
-     print """ Could not load some user defined  module functions"""
-     print """ Make sure your typed 'source MetaPathwaysrc'"""
-     print """ """
+     print(""" Could not load some user defined  module functions""")
+     print(""" Make sure your typed 'source MetaPathwaysrc'""")
+     print(""" """)
      sys.exit(3)
 
 
@@ -68,7 +68,7 @@ def main(argv, errorlogger = None, runstatslogger = None):
 
     i = 1
     for key, value in sorted_pathways:
-       print "%d\t%s\t%d" %(i, key, value/N*100)
+       print("%d\t%s\t%d" %(i, key, value/N*100))
        i = i+ 1
     #for key, value in sorted_pathways.iteritems():
     #    print key, value
