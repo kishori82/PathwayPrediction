@@ -10,6 +10,9 @@ RXN-17545
 RXN-15037
 	1.1.98.5
 
+python code/david_annotation_processing.py -d metacyc/metacyc_data/ -s  data/si4093112_ec_product.txt 
+
+
 python annotation_processing.py -d ../metacyc/metacyc_data/ -s ../data/si4093112_ec_product.txt.gz |  more
 
 install glpsol
