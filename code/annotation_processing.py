@@ -76,8 +76,6 @@ def main(argv, errorlogger = None, runstatslogger = None):
 
     (opts, args) = parser.parse_args(argv)
 
-
-    
     unique_id = re.compile(r'UNIQUE-ID - (.*)$')
     reaction_list = re.compile(r'REACTION-LIST - (.*)$')
     ec_number = re.compile(r'EC-NUMBER - .*(\d+[.]\d+[.]\d+[.]\d+)')
@@ -165,7 +163,7 @@ def main(argv, errorlogger = None, runstatslogger = None):
     # read the coreness pathway
     core_pathways={}
 
-    core_threshold = 75
+    core_threshold = 90
     with open(opts.data_folder + '/core_pathways.txt', 'r' ) as fin:
       for line in fin:
          fields = [ x.strip() for x in line.split('\t') ]
@@ -183,18 +181,21 @@ def main(argv, errorlogger = None, runstatslogger = None):
 
     # keeps track for the reactions
     rxns_in_sample={}
-    
     orfCount = 0
     hitCount = 0
     # read the sample annotations and see the matches to the annots
-    with gzip.open(opts.sample_file, 'r' ) as fin:
+    with gzip.open(opts.sample_file, 'rt' ) if opts.sample_file.endswith('.gz') \
+      else open(opts.sample_file, 'r')  as fin:
       for line in fin:
         annot_matches={}
         line = line.lower()
-        fields = [ x.strip() for x in line.split('\t') ]
+        fields = [x.strip() for x in line.split('\t')]
         #print "=====>", line
         orfCount += 1
 
+        # if EC is present in the annotation, and then if the EC correcponds to a 
+        # reaction in the set of all reactions in metacyc, then keep tract of that
+        # reaction as getting a count for annotation
         if fields[1]: 
           ec = fields[1]
           if ec in ec_to_reactions:
@@ -204,6 +205,8 @@ def main(argv, errorlogger = None, runstatslogger = None):
              rxns_in_sample[rxn] += 1
              continue
 
+        # similar to the case of EC number if the annotation in the sample matches to that 
+        # of a reaction if metacyc, then count it towards the reaction
         if len(fields) ==3 and fields[2]: 
            words = [ x.strip() for x in fields[2].split(' ') ]
            for word in words:  
@@ -231,23 +234,22 @@ def main(argv, errorlogger = None, runstatslogger = None):
 
     pwys_in_sample={}
 
-    for rxn, count in rxns_in_sample.iteritems():
+    # iterate thoroug the set of reactions in metacyc with non-zero count on ORF and then
+    # mark the pathways where these reactions appear as a candidate pathway 
+    for rxn, count in rxns_in_sample.items():
       if rxn in rxns_to_pathways:
+       # get the list of reactions where this pathway appears
        pwys = rxns_to_pathways[rxn] 
        for pwy in pwys:
           if not pwy in pwys_in_sample:
             pwys_in_sample[pwy] = 0
           pwys_in_sample[pwy] += 1
 
-    print('# orfs of the sample ', orfCount)
-    print('# orfs matched with metacyc reactions :', hitCount)
-    print("# reactions predicted :", len(rxns_in_sample.keys()))
-    print('# pathways predicted  :', len(pwys_in_sample.keys()))
+    print('# orfs in sample ', orfCount)
+    print('# orfs in metacyc reactions :', hitCount)
+    print("# reactions with orf :", len(rxns_in_sample.keys()))
+    print('# candidate pathways :', len(pwys_in_sample.keys()))
           
-
-
-
-
     pwy_to_x = {}
     x_to_pwy = {}
     x = 1
@@ -320,16 +322,88 @@ def main(argv, errorlogger = None, runstatslogger = None):
     #         print i, x_to_pwy[xpwy]
              pathways_present[x_to_pwy[xpwy]] = True
              i+=1
-    print('# core pathways :', len(core_pathways))
-    print('# pathways finally  predicted  :', len(pathways_present))
-    for pwy in  pwys_in_sample:
-       if pwy in core_pathways:
-           pass
-           #pathways_present[pwy] = True
-    print('# pathways predicted with core :', len(pathways_present))
-    for pwy in pathways_present:
-       print(pwy)
+    print('# prdicted pathways  :', len(pathways_present))
+    print('# core predicted pathways :', len(core_pathways))
 
+    #for pwy in  pwys_in_sample:
+    #   if pwy in core_pathways:
+    #       print(pwy + '\tcore')
+
+    pwy_pathway_name = {}
+    with open(opts.data_folder + '/pathways.col', 'r' ) as fin:
+       start_parsing = False
+       for line in fin:
+          line = line.strip()
+          if re.search(r'^#', line):
+             continue
+          if start_parsing:
+             fields = line.strip().split('\t')
+             pwy_pathway_name[fields[0]] = re.sub(r'</[^>]*>', '', re.sub(r'<[^\/]*>', '', fields[1]))
+          if re.search(r'^UNIQUE-ID', line):
+             start_parsing = True
+    print('\t'.join(['pwy_id', 'pwy_name', '#reactions in pwy', '#reactions in pwy observed', 'is a core pwy', '#orf/annotations'])) 
+    pwy_results = []
+    for pwy in pathways_present:
+       #if pwy in core_pathways:
+       pwy_name = pwy_pathway_name[pwy]
+       num_rxns = len(pathways_to_rxns[pwy])
+       num_rxns_present = len([x for x in pathways_to_rxns[pwy] if x in rxns_in_sample])
+       is_core_pathway = (pwy_name in core_pathways)
+       num_orfs =  len([rxns_in_sample[rxn]  for rxn  in pathways_to_rxns[pwy] if rxn in rxns_in_sample])
+       pwy_results.append([pwy, pwy_name, str(num_rxns), str(num_rxns_present), str(is_core_pathway), str(num_orfs)])
+    pwy_results.sort(key=lambda x: x[5], reverse=True)
+    for pwy_result in pwy_results:
+        print('\t'.join(pwy_result))
+
+    superpwy_pwycounts = {}
+    superpwy_name = {}
+    print('\t'.join(['High-level pwys (short name)', 'Higher-level pwys (descriptive name)', '#predicted pathways']))
+    with open(opts.data_folder + '/metacyc-pathway-hierarchy.txt', 'r' ) as fin:
+       for line in fin:
+          fields = [x for x in line.rstrip().split('\t')]
+          if fields[0]=='' and fields[1]!='':
+             super_pwy = fields[1]
+             superpwy_pwycounts[super_pwy] = {}
+             superpwy_name[super_pwy] = fields[2]
+          elif fields[0]=='' and fields[1]=='':
+             nfields = [x for x in line.lstrip().split('\t')]
+             superpwy_pwycounts[super_pwy][nfields[0]] = 0
+
+    for pwy in pathways_present:
+       for super_pwy in superpwy_pwycounts:
+         if pwy in  superpwy_pwycounts[super_pwy]:
+             superpwy_pwycounts[super_pwy][pwy] += 1
+    
+    for super_pwy in superpwy_pwycounts:
+        print('\t'.join([super_pwy, superpwy_name[super_pwy], str(sum(superpwy_pwycounts[super_pwy].values()))]))
+
+
+    
+    superpwy_pwycounts = {}
+    superpwy_name = {}
+    print('\t'.join(['High-level pwys (short name)', 'Higher-level pwys (descriptive name)', '#predicted pathways']))
+    with open(opts.data_folder + '/metacyc-pathway-hierarchy.txt', 'r' ) as fin:
+       for line in fin:
+          fields = [x for x in line.rstrip().split('\t')]
+          if fields[0]=='' and fields[1]=='' and fields[2]!='':
+             super_pwy = fields[2]
+             superpwy_pwycounts[super_pwy] = {}
+             superpwy_name[super_pwy] = fields[3]
+          elif fields[0]=='' and fields[1]=='' and fields[2]=='':
+             nfields = [x for x in line.lstrip().split('\t')]
+             superpwy_pwycounts[super_pwy][nfields[0]] = 0
+
+    for pwy in pathways_present:
+       for super_pwy in superpwy_pwycounts:
+         if pwy in  superpwy_pwycounts[super_pwy]:
+             superpwy_pwycounts[super_pwy][pwy] += 1
+    
+    for super_pwy in superpwy_pwycounts:
+        if not re.match(r'PWY', super_pwy):
+           print('\t'.join([super_pwy, superpwy_name[super_pwy], str(sum(superpwy_pwycounts[super_pwy].values()))]))
+
+
+# the main function of metapaths
 
 # the main function of metapaths
 if __name__ == "__main__":
